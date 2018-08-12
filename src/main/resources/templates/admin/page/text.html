@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:remove="tag">
+<div th:if="${!item.multiline}" class="form-group" style="padding-top: 10px;">
+    <input class="form-control" th:field="*{__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__].text}">
+</div>
+<div th:if="${item.multiline}" class="form-group" style="padding-top: 10px;">
+    <textarea class="form-control multiline" th:field="*{__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__].text}"></textarea>
+</div>
+</html>

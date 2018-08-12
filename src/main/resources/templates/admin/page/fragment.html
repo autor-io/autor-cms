@@ -1,0 +1,80 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:remove="tag">
+
+<div th:with="fragment = *{__${bindingPath}__}" style="display: flex; padding: 0;">
+    <div style="background-color: lightgray; width: 45px;">
+        <div class="sticky-top" style="">
+            <span style=" text-align: right; transform: rotate(-90deg); float: right; transform-origin: right bottom; white-space: nowrap;" >
+                Lorem ipsum dolor sit amet.
+            </span>
+        </div>
+
+    </div>
+    <div style="padding-left:15px; " th:with="structure = ${@structureService.resolveStructure(fragment)}">
+        <th:block th:each="item : ${structure?.items?.values()}">
+
+            <th:block th:switch="${item.class.simpleName}">
+                <th:block th:case="TextItem">
+                    <th:block th:replace="admin/page/non-fragment-item" />
+                </th:block>
+
+                <th:block th:case="StructureItem">
+
+                    <th:block th:each="payload,payloadItr : ${fragment.getSequence(item.name)}">
+                        <div class="form-group">
+                            <strong>
+                                [[__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__]]]
+                            </strong>
+                            <div class="btn-group btn-group-sm float-right">
+                                <button class="btn btn-secondary" th:formaction="@{remove(fragment=${bindingPath},item=${item.name},index=${payloadItr.index})}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div _class="card" style="margin-bottom: 10px; background-color:#eaeaea;">
+                            <div _class="card-body">
+                                <th:block th:with="bindingPath = __${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__]">
+                                    <th:block th:replace="admin/page/fragment" />
+                                </th:block>
+                            </div>
+                        </div>
+                    </th:block>
+
+                    <br />
+                    <button type="button" class="btn btn-secondary" data-toggle="modal"
+                            th:data-target="'#__${#ids.seq('modal')}__'">
+                        Append [[${item.name}]]
+                    </button>
+
+                    <div class="modal fade" th:id="__${#ids.prev('modal')}__" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <button class="btn btn-secondary"
+                                            th:formaction="@{append(fragment=${bindingPath},item=${item.name})}">
+                                        basicPage
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </th:block>
+            </th:block>
+
+            <hr />
+
+        </th:block>
+
+    </div>
+</div>
+
+</html>

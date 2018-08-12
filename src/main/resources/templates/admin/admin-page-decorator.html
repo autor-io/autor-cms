@@ -1,0 +1,98 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page-decorator}"
+      th:remove="tag">
+
+<th:block layout:fragment="page-css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" rel="stylesheet">-->
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css" rel="stylesheet">-->
+    <link th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet">
+</th:block>
+
+<th:block layout:fragment="page-content">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Expand at lg</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample05">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown05">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-md-0">
+                <input class="form-control" type="text" placeholder="Search">
+            </form>
+        </div>
+    </nav>
+
+    <th:block layout:fragment="admin-page-content" />
+</th:block>
+
+<th:block layout:fragment="page-js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.de.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+    <!--https://www.jqueryscript.net/time-clock/Date-Time-Picker-Bootstrap-4.html-->
+    <script th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
+
+    <!--https://github.com/MadMG/moment-jdateformatparser-->
+    <script th:src="@{/js/moment-jdateformatparser.min.js}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var dateFormat = /*[[${dateFormat}]]*/ null;
+        /*]]>*/
+        $(document).ready(function() {
+            // $(".modal").modal();
+            var scrollTop = localStorage.getItem('scrollTop');
+            // $(document).scrollTop(scrollTop);
+
+            $('textarea.multiline').summernote({
+                tabsize: 2,
+                height: 100,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']]
+                ]
+            });
+        });
+        $("form").on("submit", function() {
+            var scrollTop = $(document).scrollTop();
+            // alert(scrollTop);
+            // localStorage.setItem('scrollTop', scrollTop);
+        });
+
+        //
+        $("input[type=date]").datetimepicker({
+            format: moment().toMomentFormatString(dateFormat),
+            enabledHours: false
+        });
+
+    </script>
+</th:block>
+
+</html>

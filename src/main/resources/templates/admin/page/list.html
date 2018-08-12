@@ -1,0 +1,59 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-page-decorator}"
+      th:remove="tag">
+<th:block layout:fragment="admin-page-content">
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Pages</h1>
+
+                <p>Some intro text.</p>
+            </div>
+        </div>
+    </div>
+
+    <form th:object="${pageListing}">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+
+                    <table class="table">
+                        <thead>
+                        <th width="1%">ID</th>
+                        <th width="15%">Label</th>
+                        <th width="20%">URL</th>
+                        <th width="64%" class="text-right">Actions</th>
+                        </thead>
+                        <tbody>
+                        <tr th:each="page : *{pages}">
+                            <td th:text="${page.id}">ID</td>
+                            <td th:text="${page.label}">Label</td>
+                            <td th:text="${page.url}">URL</td>
+                            <td class="text-right">
+                                <div class="btn-group btn-group-sm">
+                                    <a th:href="@{load(id=${page.id})}" class="btn btn-secondary">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-primary" th:href="@{create(structure=basicPage)}">
+                        New basicPage
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+</html>
