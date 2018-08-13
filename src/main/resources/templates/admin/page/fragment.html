@@ -3,9 +3,14 @@
       th:remove="tag">
 
 <div th:with="fragment = *{__${bindingPath}__}" style="display: flex; padding: 0;">
-    <div style="background-color: lightgray; width: 45px;">
-        <div class="sticky-top" style="">
-            <span style=" text-align: right; transform: rotate(-90deg); float: right; transform-origin: right bottom; white-space: nowrap;" >
+    <div style="background-color: lightgray; width: 25px; ">
+        <div class="sticky-top" style=" width: 25px;">
+            <span style="
+            text-align: right;
+            transform: rotate(-90deg);
+            float: right;
+            transform-origin: right bottom;
+            white-space: nowrap;">
                 Lorem ipsum dolor sit amet.
             </span>
         </div>
@@ -33,7 +38,7 @@
                             </div>
                         </div>
 
-                        <div _class="card" style="margin-bottom: 10px; background-color:#eaeaea;">
+                        <div _class="card" _style="margin-bottom: 10px; background-color:#eaeaea;">
                             <div _class="card-body">
                                 <th:block th:with="bindingPath = __${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__]">
                                     <th:block th:replace="admin/page/fragment" />

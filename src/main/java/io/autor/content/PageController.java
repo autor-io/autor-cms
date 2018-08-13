@@ -147,7 +147,8 @@ public class PageController {
     }
 
     @PostMapping(path = "/append")
-    protected String append(@ModelAttribute PageEditor editor,
+    protected String append(@Valid @ModelAttribute PageEditor editor,
+                            BindingResult editorErrors,
                             @RequestParam(name = "fragment") String bindingPath,
                             @RequestParam(name = "item") String itemName) {
 

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 @Entity
 public class Fragment extends Payload {
 
+    @Column(name = "value")
     private String structureName;
 
     @OneToMany(mappedBy = "parent",
