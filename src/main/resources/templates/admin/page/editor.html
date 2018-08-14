@@ -14,7 +14,10 @@
         </div>
     </div>
 
-    <form th:object="${pageEditor}" method="post" th:with="page = ${pageEditor.page}">
+    <form th:object="${pageEditor}" method="post"
+          th:with="editor = ${pageEditor},
+                   page = ${pageEditor.page}"
+          enctype="multipart/form-data">
 
         <div class="container">
             <div class="row">

@@ -34,10 +34,10 @@ public class StructureBuilder implements SchemeBuilder {
         return addItem(TextItemBuilder.class, itemName);
     }
 
-    @Override
-    public NumberItemBuilder addNumberItem(String itemName) {
-        return addItem(NumberItemBuilder.class, itemName);
-    }
+//    @Override
+//    public NumberItemBuilder addNumberItem(String itemName) {
+//        return addItem(NumberItemBuilder.class, itemName);
+//    }
 
     @Override
     public MomentItemBuilder addMomentItem(String itemName) {
@@ -47,6 +47,11 @@ public class StructureBuilder implements SchemeBuilder {
     @Override
     public StructureItemBuilder addStructureItem(String itemName) {
         return addItem(StructureItemBuilder.class, itemName);
+    }
+
+    @Override
+    public AssetItemBuilder addAssetItem(String itemName) {
+        return addItem(AssetItemBuilder.class, itemName);
     }
 
     public Structure buildStructure() {

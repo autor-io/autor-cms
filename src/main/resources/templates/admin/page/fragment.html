@@ -16,13 +16,10 @@
         </div>
 
     </div>
-    <div style="padding-left:15px; " th:with="structure = ${@structureService.resolveStructure(fragment)}">
+    <div style="padding-left:15px; width: 100%;" th:with="structure = ${@structureService.resolveStructure(fragment)}">
         <th:block th:each="item : ${structure?.items?.values()}">
 
             <th:block th:switch="${item.class.simpleName}">
-                <th:block th:case="TextItem">
-                    <th:block th:replace="admin/page/non-fragment-item" />
-                </th:block>
 
                 <th:block th:case="StructureItem">
 
@@ -73,6 +70,11 @@
                     </div>
 
                 </th:block>
+
+                <th:block th:case="*">
+                    <th:block th:replace="admin/page/value" />
+                </th:block>
+
             </th:block>
 
             <hr />

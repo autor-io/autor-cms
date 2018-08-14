@@ -1,5 +1,6 @@
 package io.autor;
 
+import io.autor.content.HostService;
 import io.autor.scheme.StructureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,18 +15,24 @@ public class Application implements CommandLineRunner {
 	}
 
 	@Autowired
+	private HostService hostService;
+
+	@Autowired
 	private StructureService structureService;
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		hostService.findOrCreateHostByName("localhost");
 
 		structureService.createStructure("basicPage", 1)
 				.addTextItem("title")
 				.addTextItem("body")
 					.setMultiline(true)
 				.addStructureItem("embedded")
-                .addNumberItem("priority")
+//                .addNumberItem("priority")
                 .addMomentItem("happened")
+				.addAssetItem("picture")
 				.buildAndRegister();
 
 		"".toString();

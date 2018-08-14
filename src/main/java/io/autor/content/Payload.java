@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @DiscriminatorColumn(name = "kind")
 public abstract class Payload extends AbstractIdentifiable {
 
+    @Column(name = "item")
     String itemName;
 
     int ordinal = -1;

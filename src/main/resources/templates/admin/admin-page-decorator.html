@@ -8,6 +8,27 @@
     <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" rel="stylesheet">-->
     <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css" rel="stylesheet">-->
     <link th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet">
+    <style type="text/css">
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+    </style>
 </th:block>
 
 <th:block layout:fragment="page-content">
@@ -84,6 +105,15 @@
             var scrollTop = $(document).scrollTop();
             // alert(scrollTop);
             // localStorage.setItem('scrollTop', scrollTop);
+        });
+
+        $('.btn-file').change(function() {
+            var form = $(this).closest('form');
+            var input = $(this).children('input[type="file"]');
+            var formaction = input.attr('formaction');
+            form.attr('action', formaction);
+            form.attr('enctype', 'multipart/form-data');
+            form.submit();
         });
 
         //

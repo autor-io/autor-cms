@@ -2,9 +2,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       th:remove="tag">
 <div th:if="${!item.multiline}" class="form-group" style="padding-top: 10px;">
-    <input class="form-control" th:field="*{__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__].text}">
+    <input class="form-control" th:field="*{__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__].value}">
 </div>
 <div th:if="${item.multiline}" class="form-group" style="padding-top: 10px;">
-    <textarea class="form-control multiline" th:field="*{__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__].text}"></textarea>
+    <textarea class="form-control multiline" th:field="*{__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__].value}"></textarea>
 </div>
 </html>

@@ -25,10 +25,12 @@ public class Structure {
         Item existing = items.put(name, item);
         if (existing != null) {
             existing.structure = null;
+            existing.name = null;
         }
 
         if (item != null) {
             item.structure = this;
+            item.name = name;
         }
 
         return existing;

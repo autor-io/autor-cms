@@ -1,19 +1,19 @@
 package io.autor.scheme;
 
-import io.autor.content.Fragment;
+import io.autor.content.Asset;
 import io.autor.content.Payload;
 
 /**
  * @author Stephan Grundner
  */
-public class StructureItem extends Item {
+public class AssetItem extends ValueItem {
 
     @Override
     public Payload createPayload() {
-        return new Fragment();
+        return new Asset();
     }
 
-    protected StructureItem(int capacity, int required) {
+    public AssetItem(int capacity, int required) {
         super(capacity, required);
     }
 }

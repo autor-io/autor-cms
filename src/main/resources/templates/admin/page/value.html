@@ -1,32 +1,72 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       th:remove="tag">
-<th:block th:each="payload,payloadItr : ${fragment.getSequence(item.name)}">
-    <strong>
-        [[__${bindingPath}__.sequences[__${item.name}__]]]
-    </strong>
-    <div class="btn-group btn-group-sm float-right">
-        <button class="btn btn-secondary" th:formaction="@{remove(fragment=${bindingPath},item=${item.name},index=${payloadItr.index})}">
-            <i class="fa fa-trash"></i>
-        </button>
-    </div>
+<th:block th:with="sequence = ${fragment.getSequence(item.name)}">
+    <th:block th:each="payload,payloadItr : ${sequence}">
+        <strong>
+            [[__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__]]]
+        </strong>
+        <div class="btn-group btn-group-sm float-right">
+            <button class="btn btn-secondary"
+                    th:formaction="@{move-up(fragment=${bindingPath},item=${item.name},index=${payloadItr.index})}"
+                    th:classappend="${payloadItr.index == 0} ? disabled : _"
+                    th:disabled="${payloadItr.index == 0} ? disabled : _">
+                <i class="fa fa-arrow-up"></i>
+            </button>
+            <button class="btn btn-secondary"
+                    th:formaction="@{move-down(fragment=${bindingPath},item=${item.name},index=${payloadItr.index})}"
+                    th:classappend="${payloadItr.index == sequence.size() - 1} ? disabled : _"
+                    th:disabled="${payloadItr.index == sequence.size() - 1} ? disabled : _">
+                <i class="fa fa-arrow-down"></i>
+            </button>
+            <button class="btn btn-secondary" th:formaction="@{remove(fragment=${bindingPath},item=${item.name},index=${payloadItr.index})}">
+                <i class="fa fa-trash"></i>
+            </button>
+        </div>
+
+        <th:block th:switch="${item.class.simpleName}">
+            <th:block th:case="AssetItem">
 
 
-    <th:block th:if="${item.class.simpleName == 'TextItem'}">
-        <th:block th:if="${!item.multiline}">
-            <div class="form-group" style="padding-top: 10px;">
-                <input class="form-control" th:field="*{__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__].text}">
-            </div>
-        </th:block>
-        <th:block th:if="${item.multiline}">
-            <div class="form-group" style="padding-top: 10px;">
-                <textarea class="form-control" th:field="*{__${bindingPath}__.sequences[__${item.name}__][__${payloadItr.index}__].text}"></textarea>
-            </div>
+
+                <th:block th_fragment="image" >
+
+                    <div class="card">
+                        <img class="card-img-top" th:src="@{/assets(id=${payload.upload?.id})}" alt="Card image cap">
+                        <div class="card-body">
+
+                            <dl class="row">
+                                <dt class="col-sm-3 text-right">Filename</dt>
+                                <dd class="col-sm-9 text-left">
+                                    <span th:text="${payload?.upload?.filename}">Filename</span>
+                                </dd>
+
+                                <dt class="col-sm-3 text-right">Euismod</dt>
+                            </dl>
+
+                            <p class="card-text" th:with="token=${#ids.seq('imagetoken')}">
+
+                                <span class="btn btn-primary btn-file">
+                                    <i class="fa fa-upload"></i>
+                                    <input th:name="'file-__${token}__'" type="file"
+                                           th:formaction="@{upload(token=${token},payload=${@objectService.toId(#request, payload)})}">
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                </th:block>
+
+
+
+
+
+            </th:block>
+            <th:block th:case="*">
+                <th:block th:replace="admin/page/text" />
+            </th:block>
         </th:block>
     </th:block>
-
-
-
 </th:block>
 
 <button class="btn btn-secondary"

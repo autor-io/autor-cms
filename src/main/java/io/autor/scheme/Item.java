@@ -1,7 +1,6 @@
 package io.autor.scheme;
 
-import java.util.Map;
-import java.util.Objects;
+import io.autor.content.Payload;
 
 /**
  * @author Stephan Grundner
@@ -9,6 +8,7 @@ import java.util.Objects;
 public abstract class Item {
 
     Structure structure;
+    String name;
 
     private final int capacity;
     private final int required;
@@ -18,11 +18,7 @@ public abstract class Item {
     }
 
     public String getName() {
-        return structure.getItems().entrySet().stream()
-                .filter(it -> Objects.equals(it.getValue(), this))
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElseThrow(IllegalStateException::new);
+        return name;
     }
 
     public int getCapacity() {
@@ -32,6 +28,8 @@ public abstract class Item {
     public int getRequired() {
         return required;
     }
+
+    public abstract Payload createPayload();
 
     protected Item(int capacity, int required) {
         this.capacity = capacity;

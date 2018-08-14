@@ -29,10 +29,10 @@ public abstract class ItemBuilder<T extends Item, B extends ItemBuilder<T, B>> i
         return structureBuilder.addTextItem(itemName);
     }
 
-    @Override
-    public NumberItemBuilder addNumberItem(String itemName) {
-        return structureBuilder.addNumberItem(itemName);
-    }
+//    @Override
+//    public NumberItemBuilder addNumberItem(String itemName) {
+//        return structureBuilder.addNumberItem(itemName);
+//    }
 
     @Override
     public MomentItemBuilder addMomentItem(String itemName) {
@@ -42,6 +42,11 @@ public abstract class ItemBuilder<T extends Item, B extends ItemBuilder<T, B>> i
     @Override
     public StructureItemBuilder addStructureItem(String itemName) {
         return structureBuilder.addStructureItem(itemName);
+    }
+
+    @Override
+    public AssetItemBuilder addAssetItem(String itemName) {
+        return structureBuilder.addAssetItem(itemName);
     }
 
     protected abstract T buildItem();

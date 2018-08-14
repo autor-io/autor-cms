@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Entity
 public class Fragment extends Payload {
 
-    @Column(name = "value")
+    @Column(name = "structure")
     private String structureName;
 
     @OneToMany(mappedBy = "parent",
@@ -19,8 +19,15 @@ public class Fragment extends Payload {
             orphanRemoval = true)
     private final Set<Payload> payloads = new HashSet<>();
 
+    @Transient
+    private final Set<FragmentChangeListener> changeListeners = new LinkedHashSet<>();
+
     public String getStructureName() {
         return structureName;
+    }
+
+    void setStructureName(String structureName) {
+        this.structureName = structureName;
     }
 
     public Set<Payload> getPayloads() {
@@ -61,6 +68,12 @@ public class Fragment extends Payload {
 
             payload.itemName = itemName;
             payload.parent = this;
+
+            changeListeners.forEach(changeListener -> {
+                FragmentChangeListener.PayloadAdded change =
+                        new FragmentChangeListener.PayloadAdded(this, payload);
+                changeListener.fragmentChanged(change);
+            });
         }
     }
 
@@ -88,6 +101,14 @@ public class Fragment extends Payload {
         Payload other = sequence.get(ordinal);
         other.ordinal = payload.ordinal;
         payload.ordinal = ordinal;
+    }
+
+    public boolean addChangeListener(FragmentChangeListener changeListener) {
+        return changeListeners.add(changeListener);
+    }
+
+    public boolean removeChangeListener(FragmentChangeListener changeListener) {
+        return changeListeners.remove(changeListener);
     }
 
     public Fragment(String structureName) {

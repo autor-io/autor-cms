@@ -1,28 +1,24 @@
 package io.autor.content;
 
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-import com.fasterxml.jackson.databind.util.StdDateFormat;
-import io.autor.scheme.Item;
-import io.autor.scheme.Structure;
-import io.autor.scheme.StructureService;
-import io.autor.scheme.ValueItem;
-import io.autor.util.MomentsUtils;
+import io.autor.mvc.ObjectService;
+import io.autor.scheme.*;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.text.DateFormat;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Stephan Grundner
@@ -65,6 +61,12 @@ public class PageController {
 
     @Autowired
     private PageService pageService;
+
+    @Autowired
+    private UploadService uploadService;
+
+    @Autowired
+    private ObjectService objectService;
 
     @ModelAttribute("dateFormat")
     public String dateFormat() {
@@ -156,12 +158,12 @@ public class PageController {
         Fragment fragment = (Fragment) beanWrapper.getPropertyValue(bindingPath);
         Structure structure = structureService.resolveStructure(fragment);
         Item item = structure.getItems().get(itemName);
-        if (item instanceof ValueItem) {
-            Payload payload = new Value();
-            fragment.appendPayload(itemName, payload);
-        } else {
-            Fragment payload = new Fragment(structure.getName());
-            fragment.appendPayload(itemName, payload);
+
+        Payload payload = item.createPayload();
+        fragment.appendPayload(itemName, payload);
+
+        if (item instanceof StructureItem) {
+            ((Fragment) payload).setStructureName(structure.getName());
         }
 
         return redirect(editor);
@@ -209,6 +211,24 @@ public class PageController {
         List<Payload> sequence = fragment.getSequence(itemName);
         Payload payload = sequence.get(index);
         fragment.removePayload(payload);
+
+        return redirect(editor);
+    }
+
+    @Transactional
+    @PostMapping(path = "/upload")
+    protected String upload(@ModelAttribute PageEditor editor,
+                            BindingResult editorErrors,
+                            @RequestParam(name = "token") String token,
+                            @RequestParam(name = "payload") String payloadObjectId,
+                            HttpServletRequest request) {
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile multipartFile = multipartRequest.getMultiFileMap().getFirst("file-" + token);
+
+        Payload payload = (Payload) objectService.findObject(request, payloadObjectId);
+        Upload upload = uploadService.receive(multipartFile);
+        ((Asset) payload).setUpload(upload);
 
         return redirect(editor);
     }
